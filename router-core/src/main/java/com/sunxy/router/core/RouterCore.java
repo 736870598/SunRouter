@@ -1,6 +1,8 @@
 package com.sunxy.router.core;
 
 import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
@@ -87,6 +89,13 @@ public class RouterCore {
         }
     }
 
+    public Intent createIntent(Context context, String path){
+        Class<?> classFromPath = getClassFromPath(path);
+        if (classFromPath == null){
+            return null;
+        }
+        return new Intent(context, classFromPath);
+    }
 
     public Class<?> getClassFromPath(String path){
         RouteMeta routeMeta = loadRouteMeta(path);

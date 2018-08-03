@@ -153,7 +153,7 @@ public class RouteProcessor extends AbstractProcessor {
             //是否是 Activity 使用了Route注解
             if (typeUtils.isSubtype(typeMirror, type_Activity)){
                 routeMeta = new RouteMeta(RouteMeta.Type.ACTIVITY, route, element);
-            }else  if (typeUtils.isSubtype(typeMirror, type_Activity)){
+            }else if (typeUtils.isSubtype(typeMirror, type_Service)){
                 routeMeta = new RouteMeta(RouteMeta.Type.SERVICE, route, element);
             }else{
                 throw new RuntimeException("[Just Support Activity/Service Route] :" + element);

@@ -23,9 +23,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.toOne).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RouteMeta routeMeta = RouterCore.getInstance().loadRouteMeta("moudle1/MainActivity");
-                Intent intent = new Intent(MainActivity.this, routeMeta.getDestination());
-                startActivity(intent);
+                Intent intent = RouterCore.getInstance().createIntent(MainActivity.this, "moudle1/MainActivity");
+                if (intent != null){
+                    startActivity(intent);
+                }
             }
         });
 
