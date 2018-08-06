@@ -6,6 +6,9 @@ import android.view.View;
 import com.sunxy.sunbutterknife.annotation.UnBind;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * --
@@ -14,15 +17,36 @@ import java.lang.reflect.Constructor;
  */
 public class SunBfCore {
 
+    private static Map<Class<?>, Constructor<?>> constructorMap = new HashMap<>();
+
     public static UnBind bind(Activity target){
         Class<?> cls = target.getClass();
-        String bindViewClassName = cls.getName() + "_BindView";
+        Constructor<?> constructor = getConstructor(cls);
+        if (constructor != null){
+            try {
+                return (UnBind) constructor.newInstance(target, target.getWindow().getDecorView());
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 
-        try {
-            Class<?> bindingClass = cls.getClassLoader().loadClass(bindViewClassName);
-            Constructor<?> constructor = bindingClass.getConstructor(target.getClass(), View.class);
-            return (UnBind) constructor.newInstance(target, target.getWindow().getDecorView());
-        } catch (Exception e) {
+    private static Constructor<?> getConstructor(Class<?> cls){
+        try{
+            Constructor<?> constructor = constructorMap.get(cls);
+            if (constructor == null){
+                String bindViewClassName = cls.getName() + "_BindView";
+                Class<?> bindingClass = cls.getClassLoader().loadClass(bindViewClassName);
+                constructor = bindingClass.getConstructor(cls, View.class);
+                constructorMap.put(cls, constructor);
+            }
+            return constructor;
+        }catch (Exception e){
             e.printStackTrace();
         }
         return null;
