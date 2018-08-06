@@ -1,1 +1,1 @@
-include ':app', ':router-annotation', ':router-core', ':router-compiler', ':modile_1', ':module_2'
+include ':app', ':router-annotation', ':router-core', ':router-compiler', ':modile_1', ':module_2', ':SunButterKnife-annotation', ':SunButterKnife-compiler', ':SunButterKnife'
